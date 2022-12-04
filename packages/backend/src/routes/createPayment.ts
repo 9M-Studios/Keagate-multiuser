@@ -10,7 +10,7 @@ import { currencyDusts } from '../transactionalWallets/coinlib/trxLimits';
 import { cleanDetails, MongoTypeForRequest, AdminRouteHeaders, ErrorResponse } from './types';
 import { IFromNew } from '../types';
 
-const CreatePaymentBody = Type.Pick(MongoTypeForRequest, ['currency', 'amount', 'ipnCallbackUrl', 'invoiceCallbackUrl', 'extraId']);
+const CreatePaymentBody = Type.Pick(MongoTypeForRequest, ['payoutAddress','currency', 'amount', 'ipnCallbackUrl', 'invoiceCallbackUrl', 'extraId']);
 
 const opts: RouteShorthandOptions = {
     schema: {
@@ -43,6 +43,7 @@ export default async function createPaymentRoute(server: FastifyInstance) {
             let transactionalWallet: GenericTransactionalWallet;
             const transactionalWalletNewObj: IFromNew = {
                 amount: body.amount,
+                payoutAddress: body.payoutAddress,
                 invoiceCallbackUrl: body.invoiceCallbackUrl,
                 ipnCallbackUrl: body.ipnCallbackUrl,
                 extraId: body.extraId,

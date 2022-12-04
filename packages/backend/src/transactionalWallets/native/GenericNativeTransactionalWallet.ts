@@ -32,6 +32,7 @@ export default abstract class GenericNativeTransactionalWallet extends GenericTr
             expiresAt: this.expiresAt,
             id: this.id,
             publicKey: this.publicKey,
+            payoutAddress: this.payoutAddress,
             status: this.status,
             updatedAt: this.updatedAt,
             invoiceCallbackUrl: this.invoiceCallbackUrl,
@@ -88,7 +89,7 @@ export default abstract class GenericNativeTransactionalWallet extends GenericTr
 
     protected async _cashOut(balance: number) {
         try {
-            const { result } = await this.adminWalletMask.sendTransaction(config.getTyped(this.currency).ADMIN_PUBLIC_KEY, balance);
+            const { result } = await this.adminWalletMask.sendTransaction(this.payoutAddress??config.getTyped(this.currency).ADMIN_PUBLIC_KEY, balance);
             return result;
         } catch (error) {
             const details = this.getDetails();

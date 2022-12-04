@@ -60,6 +60,8 @@ export default function Invoice() {
         async function runner() {
             const _invoiceObj = (await fGet(`/getInvoiceStatus?invoiceId=${_invoiceId}`)) as IInvoiceObject;
             if ('error' in _invoiceObj) {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 setPaymentMajorError(_invoiceObj['error']);
                 clearInterval(interval);
                 return;

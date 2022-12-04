@@ -47,6 +47,7 @@ export default class TransactionalCoinlibWrapper extends GenericTransactionalWal
             expiresAt: this.expiresAt,
             id: this.id,
             publicKey: this.publicKey,
+            payoutAddress: this.payoutAddress,
             status: this.status,
             updatedAt: this.updatedAt,
             invoiceCallbackUrl: this.invoiceCallbackUrl,
@@ -76,6 +77,7 @@ export default class TransactionalCoinlibWrapper extends GenericTransactionalWal
             this.coinlibPayment.getBalance(this.walletIndex),
         );
         const confirmedBalance = +confirmedBalanceString;
+        console.log(confirmedBalance, this.amount * (1 - config.getTyped('TRANSACTION_SLIPPAGE_TOLERANCE')), sweepable)
         // Follow this flow...
         if (confirmedBalance >= this.amount * (1 - config.getTyped('TRANSACTION_SLIPPAGE_TOLERANCE')) && sweepable) {
             this.status = 'SENDING';
@@ -105,14 +107,14 @@ export default class TransactionalCoinlibWrapper extends GenericTransactionalWal
                 createTx = await requestRetry<BaseUnsignedTransaction>(() =>
                     this.coinlibPayment.createTransaction(
                         this.walletIndex,
-                        config.getTyped(this.currency).ADMIN_PUBLIC_KEY,
+                        this.payoutAddress??config.getTyped(this.currency).ADMIN_PUBLIC_KEY,
                         '' + (balance - minWalletBalances[this.currency]),
                     ),
                 );
             } else {
                 const utxos = await requestRetry<UtxoInfo[]>(() => this.coinlibPayment.getUtxos(this.walletIndex));
                 createTx = await requestRetry<BaseUnsignedTransaction>(() =>
-                    this.coinlibPayment.createSweepTransaction(this.walletIndex, config.getTyped(this.currency).ADMIN_PUBLIC_KEY, {
+                    this.coinlibPayment.createSweepTransaction(this.walletIndex, this.payoutAddress??config.getTyped(this.currency).ADMIN_PUBLIC_KEY, {
                         availableUtxos: utxos.length > 0 ? utxos : undefined,
                     }),
                 );

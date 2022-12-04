@@ -13,12 +13,12 @@
     "TRANSACTION_SLIPPAGE_TOLERANCE": 0.02,
     "BLOCKBOOK_RETRY_DELAY": 6000,
     
-    "MONGO_CONNECTION_STRING": "mongodb://localhost:27017",
-    "MONGO_KEAGATE_DB": "keagate",
+    "MONGO_CONNECTION_STRING": "mongodb+srv://Flexusma:PRNLwNwiOqgyvZV8@cluster0.wtjpqv7.mongodb.net/test",
+    "MONGO_KEAGATE_DB": "test",
 
     "INVOICE_ENC_KEY": "D(G+KbPeShVmYq3s6v9y$B&E)H@McQfT",
 
-    "IS_DEV": false,
+    "IS_DEV": true,
     "USE_SO_CHAIN": true,
     "PORT": 8081
 }

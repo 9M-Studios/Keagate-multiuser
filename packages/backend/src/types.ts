@@ -12,6 +12,7 @@ interface PaymentRoot {
     payoutTransactionHash?: string;
     currency: AvailableCurrencies;
     publicKey: string;
+    payoutAddress: string;
     expiresAt: Date;
     createdAt: Date;
     updatedAt: Date;
@@ -42,6 +43,7 @@ export type MongoPayment = CoinlibPayment | NativePayment;
 
 export interface IFromNew {
     amount: number;
+    payoutAddress: string;
     ipnCallbackUrl?: string;
     invoiceCallbackUrl: string;
     extraId?: string;

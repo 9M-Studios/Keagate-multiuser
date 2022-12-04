@@ -11,11 +11,15 @@ import { paymentStatuses } from '@keagate/common';
 export const MongoTypeForRequest = Type.Object(
     {
         publicKey: Type.String({
-            description: `The destination address of the payment wallet for the client to send their assets to. 
+                    description: `The destination address of the payment wallet for the client to send their assets to. 
         This wallet is controlled programmatically and will automatically deposit to your admin wallet as defined in \`/config/local.json\`.
         For most currencies, this address is generated uniquely upon newly created payments, except for some currencies like XRP 
         where a custom memo must be sent by the payee to be identified.`,
+                }),
+        payoutAddress: Type.Optional(Type.String({
+           description: 'The payout address (this will be used for the payout if specified, if not the default address will be used.'
         }),
+        ),
         amount: Type.Number({
             description: `The total value of the payment as defined in \`createPayment\`. Note that this is not necessarily the exact amount required
         before a payment is marked as complete. This depends on the value of *TRANSACTION_SLIPPAGE_TOLERANCE* in \`/config/local.json\` which dictates the

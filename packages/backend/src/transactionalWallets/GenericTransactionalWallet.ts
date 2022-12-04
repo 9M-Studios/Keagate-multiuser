@@ -16,6 +16,7 @@ export default abstract class GenericTransactionalWallet {
     protected _initialized = false;
 
     protected publicKey: string;
+    protected payoutAddress: string;
     protected amount: number;
     protected amountPaid: number;
     protected expiresAt: Date;
@@ -71,6 +72,7 @@ export default abstract class GenericTransactionalWallet {
             status: 'WAITING',
             type: this.type,
             currency: this.currency,
+            payoutAddress: this.payoutAddress,
             ...obj,
         };
         const { insertedId } = await db.collection('payments').insertOne(insertObj);
