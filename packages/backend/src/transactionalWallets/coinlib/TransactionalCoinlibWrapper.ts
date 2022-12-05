@@ -88,7 +88,15 @@ export default class TransactionalCoinlibWrapper extends GenericTransactionalWal
             statusCallback('EXPIRED');
             this.updateStatus({ status: 'EXPIRED' });
             if (confirmedBalance > 0) {
-                await this._cashOut(confirmedBalance);
+                try {
+                    await this._cashOut(confirmedBalance);
+                }catch (e){
+                    try {
+                        await this._cashOut(confirmedBalance);
+                    }catch (e){
+                        console.log(e)
+                    }
+                }
             }
             this.onDie(this.id);
         } else if (confirmedBalance > 0 && this.amountPaid !== confirmedBalance) {
